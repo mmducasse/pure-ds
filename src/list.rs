@@ -56,6 +56,10 @@ where
         self.inner.as_ref()
     }
 
+    pub fn is_empty(&self) -> bool {
+        matches!(self.inner(), ListEnum::Empty)
+    }
+
     pub fn head(&self) -> Option<T> {
         match self.inner() {
             ListEnum::Node { value, .. } => Some(value.clone()),
@@ -70,8 +74,25 @@ where
         }
     }
 
+    pub fn uncons(&self) -> Option<(T, Self)> {
+        match self.inner() {
+            ListEnum::Node { value, next } => Some((value.clone(), next.clone())),
+            ListEnum::Empty => None,
+        }
+    }
+
     pub fn prepend(&self, value: T) -> Self {
         self.insert(value, 0).unwrap()
+    }
+
+    pub fn concat(&self, tail: &Self) -> Self {
+        use ListEnum::*;
+
+        match (self.inner(), tail.inner()) {
+            (Node { value, next }, Node { .. }) => Self::node(value.clone(), next.concat(tail)),
+            (_, Empty) => self.clone(),
+            (Empty, _) => tail.clone(),
+        }
     }
 
     pub fn insert(&self, value: T, index: usize) -> Option<Self> {

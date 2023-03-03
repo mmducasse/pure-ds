@@ -52,6 +52,17 @@ fn can_reverse() {
     assert_eq!(five.reverse(), reversed);
 }
 
+#[test]
+fn can_concat() {
+    let _123 = _list(&[1, 2, 3]);
+    let _456 = _list(&[4, 5, 6]);
+    let _123456 = _list(&[1, 2, 3, 4, 5, 6]);
+
+    assert_eq!(_123.concat(&_456), _123456);
+    assert_eq!(_123.concat(&List::empty()), _123);
+    assert_eq!(List::empty().concat(&_123), _123);
+}
+
 // todo:
 //  + prepend
 //  + insert

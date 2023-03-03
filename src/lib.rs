@@ -1,4 +1,5 @@
 pub mod list;
+pub mod queue;
 mod test;
 
 pub fn add(left: usize, right: usize) -> usize {
